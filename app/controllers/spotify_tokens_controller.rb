@@ -26,7 +26,6 @@ class SpotifyTokensController < ApplicationController
       }
       auth_response = RestClient.post('https://accounts.spotify.com/api/token', body)
       auth_json = JSON.parse(auth_response.body)
-      Rails.logger.info auth_response.body
 
       header = {
         Authorization: "Bearer #{auth_json['access_token']}"
