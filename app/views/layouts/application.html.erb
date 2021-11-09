@@ -11,6 +11,9 @@
   </head>
 
   <body>
+    <% if @spotify_user %>
+      <data id="spotify-user" value="<%= @spotify_user.display_name %>"/>
+    <% end %>
     <%= yield %>
   </body>
 </html>

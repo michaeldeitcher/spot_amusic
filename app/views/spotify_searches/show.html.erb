@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Uuid:</strong>
+  <%= @spotify_search.uuid %>
+</p>
+
+<p>
+  <strong>Results:</strong>
+  <%= @spotify_search.results %>
+</p>
+
+<%= link_to 'Edit', edit_spotify_search_path(@spotify_search) %> |
+<%= link_to 'Back', spotify_searches_path %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Spotify Searches</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Uuid</th>
+      <th>Results</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @spotify_searches.each do |spotify_search| %>
+      <tr>
+        <td><%= spotify_search.uuid %></td>
+        <td><%= spotify_search.results %></td>
+        <td><%= link_to 'Show', spotify_search %></td>
+        <td><%= link_to 'Edit', edit_spotify_search_path(spotify_search) %></td>
+        <td><%= link_to 'Destroy', spotify_search, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Spotify Search', new_spotify_search_path %>

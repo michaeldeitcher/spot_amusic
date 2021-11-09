@@ -27,3 +27,4 @@ Things you may want to cover:
 # Some Research
 
 * https://medium.com/@davidjtomczyk/spotify-api-authorization-flow-with-react-and-rails-7f42845a43c
+* https://github.com/pelauimagineering/apple-music-token-generator/blob/master/create_token.rb
