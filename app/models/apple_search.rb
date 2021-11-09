@@ -3,7 +3,7 @@ require 'rest-client'
 
 class AppleSearch
   hours_to_live = 24
-  private_key = File.read(Rails.root.join('config','AuthKey_9PQJFCKT6V.p8'))
+  private_key = ENV['APPLE_AUTH_KEY'] || File.read(Rails.root.join('config','AuthKey_9PQJFCKT6V.p8'))
   ecdsa_key = OpenSSL::PKey::EC.new private_key
   ecdsa_key.check_key
 
