@@ -20,22 +20,18 @@ const SpotifySearch = props => {
     }
 
     const fetchSpotifyAlbum = uuid => {
-        let url = baseApiUri + 'spotify_searches';
-        const data = {
-            uuid: uuid,
-            authenticity_token: document.getElementsByName("authenticity_token")[0].value
-        }
+        let url = baseApiUri + 'spotify_searches?uuid=' + uuid;
         const params = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'content-type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json'
-            },
-            body: JSON.stringify(data)
+            }
         }
         fetch(url,params).then(response=>response.json()).then(data => {
             setAlbumName(data['album_name'])
             setArtistName(data['artist_name'])
+            props.onSpotifyResults(data['artist_name'], data['album_name'])
         })
     }
 
@@ -52,7 +48,6 @@ const SpotifySearch = props => {
                     <p>{albumName}</p>
                     <h4>Artist Name</h4>
                     <p>{artistName}</p>
-                    <a href={appleSearch} target='_blank'>Apple music search</a>
                 </div>
             )
         }

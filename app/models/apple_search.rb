@@ -23,28 +23,46 @@ class AppleSearch
   }
 
   @@jwt = JWT.encode payload, ecdsa_key, algorithm, header_fields=headers
+  @@api_root = 'https://api.music.apple.com/v1/'
 
-  def jwt
-    @@jwt
+  # for debugging with apple
+  def self.musickit_curl url
+    puts "curl -v -H \'Authorization: Bearer #{ @@jwt }\' \"#{url}\" "
   end
 
-  def musickit_curl url
-    puts "curl -v -H \'Authorization: Bearer #{ jwt }\' \"#{url}\" "
-  end
-
-  def musickit_http_get url
+  def self.musickit_http_get url
     storefront = 'us'
     header = {
-      Authorization: "Bearer #{jwt}"
+      Authorization: "Bearer #{@@jwt}"
     }
     response = RestClient.get url, header
     user_attr = JSON.parse(response.body)
-  rescue RestClient::InternalServerError => e
-    puts 'internal server exception raised'
-    puts e
   end
 
-  #url = 'https://api.music.apple.com/v1/storefronts/us'
-  #url = 'https://api.music.apple.com/v1/catalog/us/albums/310730204'
-end
+  def self.album_search artist, album
+    as = AlbumSearch.new
+    as.artist_name = artist
+    as.album_name = album
 
+    results = musickit_http_get @@api_root + as.query_path
+    as.find_url_in_results results
+  end
+
+  class AlbumSearch
+    attr_accessor :artist_name
+    attr_accessor :album_name
+
+    def query_path
+      "/catalog/us/search?term=#{CGI.escape(album_name + ' ' + artist_name)}"
+    end
+
+    def find_url_in_results results
+      albums = results.dig 'results', 'albums', 'data'
+      album = albums&.find do |album|
+        a = album.fetch 'attributes', {}
+        a['name'] == album_name && a['artistName'] == artist_name
+      end
+      album&.dig('attributes', 'url')
+    end
+  end
+end
